@@ -10,6 +10,6 @@ start()->
 loop()->
     receive
         Msg ->
-            io:format("Orders got ~p", [Msg])   
+            io:format("Orders got ~p", [Msg])  
     end,
     loop().

@@ -3,41 +3,41 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-loop(State)->
+catch_all_loop(State)->
     receive
-		{Pid, get} -> 
+		{Pid, get_result} -> 
     		?debugVal(get_observed_message),
 			Pid ! State;
         Any ->
     		?debugVal(observed_message),
-            loop(Any)   
+            catch_all_loop([Any|State])   
     end.
 
-set_external_service(Service)->
-    register(Service, spawn(cashier_test, loop, [[]])).
+register_dependent_service(Service)->
+    register(Service, spawn(cashier_test, catch_all_loop, [[]])).
 
-get_acc_message(Service)->
-    orders ! {self(), get},
+get_received_messages_for_dependent_service(Service)->
+    Service ! {self(), get_result},
     Result = receive
        Any ->
        	?debugVal(Any),
         Any
 	end.
 
-bang_by_name_and_get_last_message_tes()->
-	set_external_service(orders),
+bang_by_name_and_get_last_message_test()->
+	register_dependent_service(orders),
 
     orders ! order_placed,
 
-	?assertMatch(order_placed, get_acc_message(orders)).
+	?assertMatch([order_placed], get_received_messages_for_dependent_service(orders)).
 
 
-when_new_order_is_placed_orders_service_gets_notified_test()->
+when_new_order_is_placed_orders_service_gets_notified()->
 	Pid = cashier:start(),
 
-	set_external_service(orders),
+	register_dependent_service(orders),
 
-    Pid ! new_order,
+    cashier ! new_order,
 
-	?assertMatch(order_placed, get_acc_message(orders)).
+	?assertMatch(order_placed, get_received_messages_for_dependent_service(orders)).
 
