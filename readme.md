@@ -28,7 +28,7 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 	Barista-->Barista: preparing
 	Cashier->Customer: request payment
 	Barista-->Barista: toss timeout
-	Customer->Cashier: pay
+	Customer->Cashier: pay order
 	Cashier-->Orders: order paid
 	Orders->Barista: paid
 	Barista-->Barista: done
