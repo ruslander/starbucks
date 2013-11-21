@@ -18,7 +18,7 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 
 #### Interaction 
 
--![diagram](https://github.com/ruslander/starbucks/raw/master/doc/diag.png)
+![diagram](https://github.com/ruslander/starbucks/raw/master/doc/diag.png)
 
 #### Messages 
 
