@@ -1,6 +1,6 @@
 # OTP/Erlang modelling exercise
 
-Sample source is [Starbucks Does Not Use Two-Phase Commit][1]
+Inspired from [Starbucks Does Not Use Two-Phase Commit][1]
 
 
   [1]: http://google.comhttp://www.enterpriseintegrationpatterns.com/ramblings/18_starbucks.html  
