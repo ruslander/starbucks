@@ -16,9 +16,9 @@ when__new_order__gets_fired__order_placed__test_() ->
        fun cleanup/1,
        ?_test(
           begin
-				dependency:register(orders),
-			    cashier ! new_order,
-				?assertMatch([order_placed], dependency:get_calls(orders))
+      				dependency:register(orders),
+    			    cashier ! new_order,
+    				  ?assertMatch([order_placed], dependency:get_calls(orders))
           end)}.
 
 when__pay_order__gets_fired__order_paid__test_() ->
@@ -27,7 +27,7 @@ when__pay_order__gets_fired__order_paid__test_() ->
        fun cleanup/1,
        ?_test(
           begin
-				dependency:register(orders),
-			    cashier ! pay_order,
-				?assertMatch([order_paid], dependency:get_calls(orders))
+				      dependency:register(orders),
+			        cashier ! pay_order,
+				      ?assertMatch([order_paid], dependency:get_calls(orders))
           end)}.

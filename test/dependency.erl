@@ -10,7 +10,9 @@ catch_all_loop(State)->
     end.
 
 register(Service)->
-    register(Service, spawn(dependency, catch_all_loop, [[]])).
+    Pid = spawn(dependency, catch_all_loop, [[]]),
+    register(Service, Pid),
+    Pid.
 
 get_calls(Service)->
     timer:sleep(1000),
