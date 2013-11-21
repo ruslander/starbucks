@@ -6,11 +6,17 @@ start()->
     register(?MODULE, Pid),
     Pid.
 
+stop() -> 
+    ?MODULE ! stop, 
+    unregister(?MODULE).
 
 loop()->
     receive
         new_order ->
             orders ! order_placed,
+            loop();
+        pay_order ->
+            orders ! order_paid,
             loop();
         stop ->
             ok;
