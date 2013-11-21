@@ -16,21 +16,25 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 	As a barista, I want to know about of drinks that I need to make, so that I can serve my customers
 	As a barista, I want to check that a customer has payd for their drink so I that I can serve it
 
-#### Actor interaction 
+#### Interaction 
 
+-![diagram](https://github.com/ruslander/starbucks/raw/master/doc/diag.png)
 
-#### Message flow 
+#### Messages 
 
-	Starbucks Customer->Cashier: new order 
-	Cashier-->Barista: order placed 
-	Barista-->Barista: preparing 
-	Cashier->Customer: request payment 
-	Customer->Cashier: pay order 
-	Cashier-->Barista: order paid 
-	Barista-->Barista: done 
-	Note over Barista: paid & done 
+	Customer->Cashier: new order
+	Cashier-->Orders: order placed
+	Orders->Barista: prepare
+	Barista-->Barista: preparing
+	Cashier->Customer: request payment
+	Barista-->Barista: toss timeout
+	Customer->Cashier: pay
+	Cashier-->Orders: order paid
+	Orders->Barista: paid
+	Barista-->Barista: done
+	Note over Barista: paid & done
 	Barista->Customer: drink ready
-
+		
 
 ### Conclusion
 
