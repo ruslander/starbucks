@@ -11,13 +11,22 @@ catch_all_loop(State)->
 
 register(Service)->
     Pid = spawn(dependency, catch_all_loop, [[]]),
+    
+    case whereis(Service) of
+        undefined ->ok;
+        Old ->
+            unregister(Service),
+            true = exit(Old, kill)
+    end,
+
     register(Service, Pid),
     Pid.
 
 get_calls(Service)->
-    timer:sleep(1000),
+    timer:sleep(1),
     Service ! {self(), get_result},
     receive
-       Any -> Any
+       Any -> 
+            Any
 	end.
 

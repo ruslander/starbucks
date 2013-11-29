@@ -3,32 +3,31 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-setup() ->
-    barista:start().
 
-cleanup(_Pid) ->
-    barista:stop().
+when_idle_and_prepare__then_waits_for_paid___test_() ->
+    dependency:register(customer),
+    Barista = spawn(barista, loop, [[]]),
+
+    Barista ! prepare,
+
+    ?_assertMatch([], dependency:get_calls(customer)).
 
 
-when__prepare_and_paid__gets_fired__drink_ready__test_() ->
-     { setup,
-       fun setup/0,
-       fun cleanup/1,
-       ?_test(
-          begin
-				      dependency:register(customer),
-              barista ! prepare,
-			        barista ! paid,
-				      ?assertMatch([drink_ready], dependency:get_calls(customer))
-          end)}.
+when__preparing_and_paid__then__drink_ready__test_() ->
 
-when__prepare__gets_fired__but_nothing_follows_then__client_does_not_get_notified_test_() ->
-     { setup,
-       fun setup/0,
-       fun cleanup/1,
-       ?_test(
-          begin
-              dependency:register(customer),
-              barista ! prepare,
-              ?assertMatch([], dependency:get_calls(customer))
-          end)}.
+    dependency:register(customer),
+    Barista = spawn(barista, loop, [[true]]),
+
+    Barista ! paid,
+
+    ?_assertMatch([drink_ready], dependency:get_calls(customer)).
+
+full_when__preparing_and_paid__then__drink_ready__test_() ->
+
+    dependency:register(customer),
+    Barista = spawn(barista, loop, [[]]),
+
+    Barista ! prepare,
+    Barista ! paid,
+
+    ?_assertMatch([drink_ready], dependency:get_calls(customer)).
