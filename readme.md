@@ -31,7 +31,7 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 #### Test cases
 
 	customer: when I'm asked to pay for coffe then I hand money to cashier
-	customer: when I get my drink then I smile and day thank you to barsta
+	customer: when I get my drink then I smile and say "thank you" to barista
 
 	cashier: when a new order is placed then I ask to be paid
 				and order placed gets fired

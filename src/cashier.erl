@@ -12,11 +12,11 @@ stop() ->
 
 loop()->
     receive
-        new_order ->
-            orders ! order_placed,
+        {new_order, Customer} ->
+            orders ! {order_placed, Customer},
             loop();
-        pay_order ->
-            orders ! order_paid,
+        {payment, Customer} ->
+            orders ! {order_paid, Customer},
             loop();
         stop ->
             ok;
