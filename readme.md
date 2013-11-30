@@ -9,13 +9,6 @@ Inspired from [Starbucks Does Not Use Two-Phase Commit][1]
 
 Starbucks, like most other businesses is primarily interested in maximizing throughput of orders. More orders equals more revenue. As a result they use asynchronous processing. When you place your order the cashier marks a coffee cup with your order and places it into the queue. The queue is quite literally a queue of coffee cups lined up on top of the espresso machine. This queue decouples cashier and barista and allows the cashier to keep taking orders even if the barista is backed up for a moment. It allows them to deploy multiple baristas in a Competing Consumer scenario if the store gets busy.
 
-#### User stories
-
-	As a customer, I want to order a coffee so that Starbucks can prepare my drink
-	As a customer, I want to pay my bill to receive my drink
-	As a barista, I want to know about of drinks that I need to make, so that I can serve my customers
-	As a barista, I want to check that a customer has payd for their drink so I that I can serve it
-
 #### Interaction 
 
 ![diagram](https://github.com/ruslander/starbucks/raw/master/doc/diag.png)
@@ -35,6 +28,26 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 	Note over Barista: paid & done
 	Barista->Customer: drink ready
 		
+#### Test cases
+
+	customer: when I'm asked to pay for coffe then I hand money to cashier
+	customer: when I get my drink then I smile and day thank you to barsta
+
+
+	cashier: when a new order is placed then I ask to be paid
+				and order placed gets fired
+	cashier: when i get a payment then I fire the order paid 			
+
+
+	orders: when order is placed then an work item is enquied
+	orders: when order is paid then is marked as paid and can be handed to the customer
+
+
+	barista: when barista starts working then it sends ready message to the orders dispatcher
+	barista: when I get prepare then I start preparing the drink
+	barista: when drink is done then if for 1 sec is not paid then I toss it 
+	barista: when I get order paid then I hand it to customer 
+	barista: when drink is given to customer then sends ready to orders deispatcher
 
 ### Conclusion
 
