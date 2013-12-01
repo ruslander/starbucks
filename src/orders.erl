@@ -2,7 +2,7 @@
 -compile(export_all).
 
 start()->
-    Pid = spawn(?MODULE, loop, [dict:new(),queue:new()]),
+    Pid = spawn(?MODULE, loop, [queue:new()]),
     register(?MODULE, Pid),
     Pid.
 
@@ -13,30 +13,30 @@ stop() ->
 register_idle_barista(Barista, Baristas)->
     queue:in(Barista, Baristas).
 
-new_order_placed(OrderId, Orders, Baristas)->
-    {{value,First}, Left} = queue:out(Baristas),
-    AppOrders = dict:append(OrderId, First, Orders),
-    First ! prepare,
-    {AppOrders, Left}.
+new_order_placed(Order, Orders)->
+    queue:in(Order, Orders).
 
-order_was_paid(OrderId, Orders)->
-    [Barista] = dict:fetch(OrderId, Orders),
-    NewOrders = dict:erase(OrderId, Orders),
-    Barista ! paid,
-    NewOrders.
+%order_was_paid(OrderId, Orders)->
+%    AppOrders = dict:append(OrderId, First, Orders),
+%    [Barista] = dict:fetch(OrderId, Orders),
+%    NewOrders = dict:erase(OrderId, Orders),
+%    Barista ! paid,
+%    NewOrders.
 
-loop(Orders, Baristas)->
+loop(Orders)->
     receive
-    	stop -> ok;
-        {ready, Barista} ->
-            loop(Orders, register_idle_barista(Barista, Baristas));
+        stop -> ok;
+        {get_state, Pid} -> 
+            Pid ! {Orders},
+            loop(Orders);
+        {ready, _Barista} ->
+            loop(Orders);
     	{order_placed, OrderId} ->
-            {NewOrders, Left} = new_order_placed(OrderId, Orders, Baristas),
-            loop(NewOrders, Left);
-        {order_paid, OrderId} ->
-            NewOrders = order_was_paid(OrderId, Orders),
-        	loop(NewOrders, Baristas);  
+            NewOrders = new_order_placed(OrderId, Orders),
+            loop(NewOrders);
+        {order_paid, _OrderId} ->
+        	loop(Orders);  
         Msg ->
             io:format("Orders got ~p", [Msg]),
-            loop(Orders, Baristas)  
+            loop(Orders)  
     end.

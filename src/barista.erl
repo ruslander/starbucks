@@ -17,11 +17,14 @@ loop([true,true])->
 
 loop(State)->
     receive
+        stop -> ok;
+        {get_state, Pid} -> 
+            Pid ! State,
+            loop(State);
         prepare ->
             loop([true|State]);
         paid ->
             loop([true|State]);
-        stop -> ok;
         Msg ->
             io:format("Barista got ~p", [Msg]),
             loop(State)  

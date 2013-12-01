@@ -22,6 +22,14 @@ register(Service)->
     register(Service, Pid),
     Pid.
 
+get_state(Service)->
+    timer:sleep(1),
+    Service ! {get_state, self()},
+    receive
+       Any -> 
+            Any
+    end.
+
 get_calls(Service)->
     timer:sleep(1),
     Service ! {self(), get_result},

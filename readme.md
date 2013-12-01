@@ -39,6 +39,7 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 
 	orders: when order is placed then an work item is enquied
 	orders: when order is paid then is marked as paid and can be handed to the customer
+	orders: when order in progress is paid then barista gets notified
 
 	barista: when barista starts working then it sends ready message to the orders dispatcher
 	barista: when I get prepare then I start preparing the drink
