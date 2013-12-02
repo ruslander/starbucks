@@ -3,7 +3,7 @@
 Inspired from [Starbucks Does Not Use Two-Phase Commit][1]
 
 
-  [1]: http://google.comhttp://www.enterpriseintegrationpatterns.com/ramblings/18_starbucks.html  
+  [1]: http://www.enterpriseintegrationpatterns.com/ramblings/18_starbucks.html  
 
 #### Problem
 
