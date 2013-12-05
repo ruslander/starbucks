@@ -63,34 +63,3 @@ given_barsita_is_preparing__when_order_is_paid__then_barista_hands_the_drink_tes
     Orders ! {order_paid, OrderId},
 
     ?_assertMatch([{paid, OrderId}], dependency:get_calls(barista)).
-
-%    orders: when order is paid then is marked as paid and can be handed to the customer
-%    orders: when order in progress is paid then barista gets notified
-
-
-when__order_placed__gets_fired__barista_gets_prepare_tes() ->
-
-    Orders = spawn(orders, loop, [dict:new(),queue:new()]),
-    B1 = dependency:register(barista),
-    Orders ! {ready, B1},
-
-    Orders ! {order_placed, make_ref()},
-
-    ?_assertMatch([prepare], dependency:get_calls(barista)).
-
-when__order_paid__gets_notified__first_available_barista_tes() ->
-    Orders = spawn(orders, loop, [dict:new(),queue:new()]),
-
-    B1 = dependency:register(barista),
-    Orders ! {ready, B1},
-
-    B2 = dependency:register(barista3),
-    Orders ! {ready, B2},
-
-    OrderId = make_ref(),
-
-    Orders ! {order_placed, OrderId},
-    Orders ! {order_placed, make_ref()},
-    Orders ! {order_paid, OrderId},
-
-    ?_assertMatch([paid,prepare], dependency:get_calls(barista)).
