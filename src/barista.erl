@@ -11,10 +11,6 @@ stop() ->
     unregister(?MODULE).
 
 
-loop([true,true])->
-    customer ! drink_ready,
-    loop([]);
-
 loop(State)->
     receive
         stop -> ok;
@@ -22,9 +18,16 @@ loop(State)->
             Pid ! State,
             loop(State);
         prepare ->
-            loop([true|State]);
-        paid ->
-            loop([true|State]);
+            loop([true]);
+        {paid, Customer} ->
+            case State of
+                [true] ->
+                    Customer ! drink_ready,
+                    orders ! {ready, self()},
+                    loop([]);
+                _ ->
+                    loop(State)
+            end;
         Msg ->
             io:format("Barista got ~p", [Msg]),
             loop(State)  

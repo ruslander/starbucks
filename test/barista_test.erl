@@ -12,22 +12,22 @@ when_idle_and_prepare__then_waits_for_paid___test_() ->
 
     ?_assertMatch([], dependency:get_calls(customer)).
 
-
 when__preparing_and_paid__then__drink_ready__test_() ->
 
-    dependency:register(customer),
+    dependency:register(orders),
+    C = dependency:register(customer),
     Barista = spawn(barista, loop, [[true]]),
 
-    Barista ! paid,
+    Barista ! {paid, C},
 
-    ?_assertMatch([drink_ready], dependency:get_calls(customer)).
+    ?_assertMatch([drink_ready], dependency:get_calls(C)).
 
-full_when__preparing_and_paid__then__drink_ready__test_() ->
+when__preparing_and_paid__then__orders_ready__test_() ->
 
-    dependency:register(customer),
-    Barista = spawn(barista, loop, [[]]),
+    dependency:register(orders),
+    C = dependency:register(customer),
+    Barista = spawn(barista, loop, [[true]]),
+    
+    Barista ! {paid, C},
 
-    Barista ! prepare,
-    Barista ! paid,
-
-    ?_assertMatch([drink_ready], dependency:get_calls(customer)).
+    ?_assertMatch([{ready, Barista}], dependency:get_calls(orders)).
