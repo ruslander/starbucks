@@ -20,7 +20,7 @@ when__preparing_and_paid__then__drink_ready__test_() ->
 
     Barista ! {paid, C},
 
-    ?_assertMatch([drink_ready], dependency:get_calls(C)).
+    ?_assertMatch([{drink_ready, Barista}], dependency:get_calls(C)).
 
 when__preparing_and_paid__then__orders_ready__test_() ->
 

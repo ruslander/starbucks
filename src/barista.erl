@@ -1,11 +1,9 @@
 -module(barista).
 -compile(export_all).
 
--define(Log(M), io:format("~s ~s ~n", [atom_to_list(?MODULE), M])).
-
 start()->
     Pid = spawn(?MODULE, loop, [[]]),
-    ?Log("started"),
+    log("started"),
     register(?MODULE, Pid),
     Pid.
 
@@ -21,19 +19,25 @@ loop(State)->
             Pid ! State,
             loop(State);
         prepare ->
-            ?Log("got prepare"),
+            log("got prepare"),
             loop([true]);
         {paid, Customer} ->
-            ?Log("got paid"),
+            log("got paid"),
             case State of
                 [true] ->
-                    Customer ! drink_ready,
+                    Customer ! {drink_ready, self()},
                     orders ! {ready, self()},
                     loop([]);
                 _ ->
                     loop(State)
             end;
+        thank_you ->
+            log("got thank_you"),
+            loop(State);  
         Msg ->
             io:format("Barista got ~p", [Msg]),
             loop(State)  
     end.
+
+log(M)->
+ io:format("~s ~s ~n", [atom_to_list(?MODULE), M]).

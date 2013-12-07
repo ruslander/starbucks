@@ -1,11 +1,9 @@
 -module(customer).
 -compile(export_all).
 
--define(Log(M), io:format("~s ~s ~n", [atom_to_list(?MODULE), M])).
-
 start()->
     Pid = spawn(?MODULE, loop, [[]]),
-    ?Log("started"),
+    log("started"),
     register(?MODULE, Pid),
     Pid.
 
@@ -14,7 +12,8 @@ stop() ->
     unregister(?MODULE).
 
 want_coffe(Cashier, Customer)->
-    Customer ! {want_coffe, Cashier}.
+    Customer ! {want_coffe, Cashier},
+    ok.
 
 loop(State)->
     receive
@@ -23,18 +22,21 @@ loop(State)->
             Pid ! State,
             loop(State);
         {want_coffe, Cashier}->
-            ?Log("got want_coffe"),
+            log("got want_coffe"),
             Cashier ! {new_order, self()},
             loop(want_coffe);
-    	{Barista , drink_ready} -> 
-            ?Log("got drink_ready"),
+    	{drink_ready, Barista} -> 
+            log("got drink_ready"),
     		Barista ! thank_you,
-            loop(mmmmmmmm);
+            loop(drink_ready);
     	{Cashier, request_payment} ->
-            ?Log("got request_payment"),
+            log("got request_payment"),
     		Cashier ! {payment, self()},
             loop(State);
         Msg ->
-            io:format("Customer got ~p", [Msg]),
+            log(Msg),
             loop(State)  
     end.
+
+log(M)->
+ io:format("~s ~s ~n", [atom_to_list(?MODULE), M]).

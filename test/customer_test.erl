@@ -7,7 +7,7 @@ when__drink_ready__then__I_say_thank_you_to_barista__test_() ->
     B = dependency:register(barista),
     Customer = spawn(customer, loop, [[]]),
 
-    Customer ! {B, drink_ready},
+    Customer ! {drink_ready, B},
 
     ?_assertMatch([thank_you], dependency:get_calls(barista)).
 

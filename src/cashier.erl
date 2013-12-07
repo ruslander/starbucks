@@ -1,11 +1,9 @@
 -module(cashier).
 -compile(export_all).
 
--define(Log(M), io:format("~s ~s ~n", [atom_to_list(?MODULE), M])).
-
 start()->
     Pid = spawn(?MODULE, loop, []),
-    ?Log("started"),
+    log("started"),
     register(?MODULE, Pid),
     Pid.
 
@@ -16,12 +14,13 @@ stop() ->
 loop()->
     receive
         {new_order, Customer} ->
-            ?Log("got new_order"),
             orders ! {order_placed, Customer},
+            Customer ! {self(), request_payment},
+            log("got new_order"),
             loop();
         {payment, Customer} ->
-            ?Log("got payment"),
             orders ! {order_paid, Customer},
+            log("got payment"),
             loop();
         stop ->
             ok;
@@ -29,3 +28,6 @@ loop()->
             io:format("Cashier got unknown ~p", [Msg]),
             loop()   
     end.
+
+log(M)->
+ io:format("~s ~s ~n", [atom_to_list(?MODULE), M]).
