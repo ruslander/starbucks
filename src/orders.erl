@@ -10,6 +10,9 @@ stop() ->
     ?MODULE ! stop, 
     unregister(?MODULE).
 
+ready(Barista)->
+    orders ! {ready, Barista}.
+
 new_order_placed(Order, Orders)->
     queue:in(Order, Orders).
 

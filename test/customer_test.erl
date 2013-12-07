@@ -5,7 +5,7 @@
 
 when__drink_ready__then__I_say_thank_you_to_barista__test_() ->
     B = dependency:register(barista),
-    Customer = spawn(customer, loop, []),
+    Customer = spawn(customer, loop, [[]]),
 
     Customer ! {B, drink_ready},
 
@@ -13,7 +13,7 @@ when__drink_ready__then__I_say_thank_you_to_barista__test_() ->
 
 when__request_payment__then__I_pay_for_my_drink__test_()->
     C = dependency:register(cashier),
-    Customer = spawn(customer, loop, []),
+    Customer = spawn(customer, loop, [[]]),
 
     Customer ! {C, request_payment},
 

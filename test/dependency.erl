@@ -9,15 +9,18 @@ catch_all_loop(State)->
         	catch_all_loop([Any|State])   
     end.
 
-register(Service)->
-    Pid = spawn(dependency, catch_all_loop, [[]]),
-    
+kill_if_exists(Service)->
     case whereis(Service) of
         undefined ->ok;
         Old ->
             unregister(Service),
             true = exit(Old, kill)
-    end,
+    end.
+
+register(Service)->
+    Pid = spawn(dependency, catch_all_loop, [[]]),
+    
+    kill_if_exists(Service),    
 
     register(Service, Pid),
     Pid.
