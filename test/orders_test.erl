@@ -9,7 +9,6 @@ when__order_placed__then__1workItem_is_enquied_test_()->
     Orders ! {order_placed, make_ref()},
 
     {OrdersQueue, _, _} = dependency:get_state(Orders),
-
     ?_assertEqual(1, queue:len(OrdersQueue)).
 
 when__barista_ready__then__1worker_is_enquied_test_()->
@@ -18,7 +17,6 @@ when__barista_ready__then__1worker_is_enquied_test_()->
     Orders ! {ready, make_ref()},
 
     {_, BarsitasQueue, _} = dependency:get_state(Orders),
-
     ?_assertEqual(1, queue:len(BarsitasQueue)).
 
 
