@@ -17,4 +17,4 @@ when__request_payment__then__I_pay_for_my_drink__test_()->
 
     Customer ! {C, request_payment},
 
-	?_assertMatch([{payment, Customer}], dependency:get_calls(cashier)).
+    ?_assertMatch([{payment, Customer}], dependency:get_calls(cashier)).

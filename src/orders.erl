@@ -51,7 +51,7 @@ loop(Orders, Baristas, Wip)->
             MoreBaristas = new_barista_ready(Barista, Baristas),
             {NewOrders, NewBaristas, NewWip} = assign_order_to_barista(Orders, MoreBaristas, Wip),
             loop(NewOrders, NewBaristas, NewWip);
-    	{order_placed, OrderId} ->
+        {order_placed, OrderId} ->
             log("got order_placed"),
             MoreOrders = new_order_placed(OrderId, Orders),
             {NewOrders, NewBaristas, NewWip} = assign_order_to_barista(MoreOrders, Baristas, Wip),
@@ -59,7 +59,7 @@ loop(Orders, Baristas, Wip)->
         {order_paid, OrderId} ->
             log("got order_paid"),
             NewWip = order_paid_customer_is_ready_to_go(Wip, OrderId),
-        	loop(Orders, Baristas, NewWip);  
+            loop(Orders, Baristas, NewWip);  
         Msg ->
             io:format("Orders got ~p", [Msg]),
             loop(Orders, Baristas, Wip)  

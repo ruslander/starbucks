@@ -3,10 +3,10 @@
 
 catch_all_loop(State)->
     receive
-		{Source, get_result} -> 
-			Source ! State;
+        {Source, get_result} -> 
+            Source ! State;
         Any -> 
-        	catch_all_loop([Any|State])   
+            catch_all_loop([Any|State])   
     end.
 
 kill_if_exists(Service)->
@@ -39,5 +39,5 @@ get_calls(Service)->
     receive
        Any -> 
             Any
-	end.
+    end.
 

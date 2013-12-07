@@ -17,7 +17,7 @@ want_coffe(Cashier, Customer)->
 
 loop(State)->
     receive
-    	stop -> ok;
+        stop -> ok;
         {get_state, Pid} ->
             Pid ! State,
             loop(State);
@@ -25,13 +25,13 @@ loop(State)->
             log("got want_coffe"),
             Cashier ! {new_order, self()},
             loop(want_coffe);
-    	{drink_ready, Barista} -> 
+        {drink_ready, Barista} -> 
             log("got drink_ready"),
-    		Barista ! thank_you,
+            Barista ! thank_you,
             loop(drink_ready);
-    	{Cashier, request_payment} ->
+        {Cashier, request_payment} ->
             log("got request_payment"),
-    		Cashier ! {payment, self()},
+            Cashier ! {payment, self()},
             loop(State);
         Msg ->
             log(Msg),
