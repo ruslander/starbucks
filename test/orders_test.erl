@@ -47,8 +47,8 @@ given_there_is_1_barista_ready__when_order_placed__then_is_registered_1wip_test_
     Orders = spawn(orders, loop, [queue:new(), With1Barista, dict:new()]),
     
     Orders ! {order_placed, make_ref()},
+    
     {_, _, Wip} = dependency:get_state(Orders),
-
     ?_assertMatch(1, dict:size(Wip)).
 
 given_barsita_is_preparing__when_order_is_paid__then_barista_hands_the_drink_test_()->
