@@ -4,7 +4,7 @@
 -include_lib("eunit/include/eunit.hrl").
 
 
-when_idle_and_prepare__then_waits_for_paid___test_() ->
+when_prepare__then__no_action___test_() ->
     dependency:register(customer),
     Barista = spawn(barista, loop, [[]]),
 
@@ -12,7 +12,7 @@ when_idle_and_prepare__then_waits_for_paid___test_() ->
 
     ?_assertMatch([], dependency:get_calls(customer)).
 
-when__preparing_and_paid__then__drink_ready__test_() ->
+when_paid__then__drink_ready__test_() ->
 
     dependency:register(orders),
     C = dependency:register(customer),
@@ -22,7 +22,7 @@ when__preparing_and_paid__then__drink_ready__test_() ->
 
     ?_assertMatch([{drink_ready, Barista}], dependency:get_calls(C)).
 
-when__preparing_and_paid__then__orders_ready__test_() ->
+when_paid__then__ready__test_() ->
 
     dependency:register(orders),
     C = dependency:register(customer),
