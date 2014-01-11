@@ -28,28 +28,10 @@ Starbucks, like most other businesses is primarily interested in maximizing thro
 	Note over Barista: paid & done
 	Barista->Customer: drink ready
 		
-#### Test cases
-
-	customer: when I'm asked to pay for coffe then I hand money to cashier
-	customer: when I get my drink then I smile and say "thank you" to barista
-
-	cashier: when a new order is placed then I ask to be paid
-				and order placed gets fired
-	cashier: when i get a payment then I fire the order paid 			
-
-	orders: when order is placed then an work item is enquied
-	orders: when order is paid then is marked as paid and can be handed to the customer
-	orders: when order in progress is paid then barista gets notified
-
-	barista: when barista starts working then it sends ready message to the orders dispatcher
-	barista: when I get prepare then I start preparing the drink
-	barista: when drink is done then if for 1 sec is not paid then I toss it 
-	barista: when I get order paid then I hand it to customer 
-	barista: when drink is given to customer then sends ready to orders deispatcher
 
 ### Conclusion
 
-Implemenation is opinionated and intentionally kept as simple as posible.
+SOA, Micro Services, Actors, Testing
 
 ### Feedback
 
